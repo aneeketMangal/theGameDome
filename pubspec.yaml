@@ -1,0 +1,37 @@
+name: snake
+description: A new Flutter project.
+
+publish_to: 'none' 
+
+version: 1.0.0+1
+
+environment:
+  sdk: ">=2.7.0 <3.0.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  url_launcher: ^5.5.0
+  flutter_signin_button: ^1.0.0
+  sqflite: any
+  path_provider: ^1.6.7
+  shared_preferences: ^0.5.12+4
+  scroll_snap_list: ^0.6.0
+  animated_text_kit: ^3.1.0
+  
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+flutter:
+  assets:
+    - assets/
+    - assets/hangman/
+    - assets/characterIcons/
+
+  uses-material-design: true
+
+  fonts:
+    - family: Secret
+      fonts:
+        - asset: assets/defaultfont.ttf
