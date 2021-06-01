@@ -109,10 +109,19 @@ class _InitialRegisterState extends State<InitialRegister> {
 
   void saveDataAndReturn() async {
     String name = titleController.text;
+    print(name);
     if (titleController.text == "") {
       name = currAvatar.username;
     }
     int val = _focusedIndex;
+    if (val == null) {
+      val = currAvatar.avatarIndex;
+    }
+    if (val == null) {
+      val = 0;
+    }
+
+    print(val);
     if (name != null && val != null) {
       insertToSharedPreferences(val, name);
 
