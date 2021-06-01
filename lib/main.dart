@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:snake/engine/hangman/hangman_engine.dart';
 import 'package:snake/engine/minesweeper/minesweeper_engine.dart';
 import 'package:snake/engine/snake/snake_engine.dart';
+import 'package:snake/pages/chat.dart';
 import 'package:snake/pages/introSplash.dart';
 import 'package:snake/pages/leaderboard.dart';
 import 'package:snake/Shared/ui_elements/textStyle.dart';
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
         '/third': (context) => Hangman(),
         '/fourth': (context) => About(),
         '/fifth': (context) => GameList(),
+        // '/sixth': (context) => ChatRoom(userName: "lnl"),
       },
     );
   }

@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:snake/Shared/ui_elements/colors.dart';
 import 'package:snake/Shared/widgets/widgets.dart';
+import 'package:snake/pages/chat.dart';
 import 'package:snake/register/avatar.dart';
 import 'package:snake/register/initialRegisterPage.dart';
 
@@ -103,22 +104,34 @@ class _ConsoleScreenState extends State<ConsoleScreen> {
               mainAxisSpacing: 2,
               crossAxisCount: 2,
               children: <Widget>[
-                for (int i = 0; i < 4; i++)
-                  if (i != 3) gameTile(context, i) else devTile(context, 3),
+                for (int i = 0; i < 6; i++)
+                  if (i != 3)
+                    gameTile(context, i, currAvatar.username)
+                  else
+                    devTile(context, 3),
               ],
             ),
           ),
-          Expanded(flex: 3, child: leaderBoardButton(context))
+          // Expanded(flex: 3, child: leaderBoardButton(context))
         ],
       ),
     );
   }
 }
 
-Widget gameTile(BuildContext context, int position) {
+Widget gameTile(BuildContext context, int position, String username) {
   return GestureDetector(
     onTap: () {
-      Navigator.pushNamedAndRemoveUntil(context, route[position], (r) => true);
+      if (position != 5)
+        Navigator.pushNamedAndRemoveUntil(
+            context, route[position], (r) => true);
+      else
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (BuildContext context) {
+            return ChatRoom(username);
+          }),
+        );
     },
     child: Padding(
       padding: const EdgeInsets.all(10.0),
@@ -153,21 +166,6 @@ Widget gameTile(BuildContext context, int position) {
       ),
     ),
   );
-}
-
-Widget leaderBoardButton(BuildContext context) {
-  return Center(
-      child: Container(
-          padding: const EdgeInsets.only(top: 25, left: 10, right: 10),
-          child: RaisedButton.icon(
-            icon: Icon(Icons.sanitizer),
-            label: Text("      LeaderBoad      ",
-                style: Theme.of(context).textTheme.headline2),
-            color: Theme.of(context).accentColor,
-            onPressed: () {
-              Navigator.pushNamedAndRemoveUntil(context, "/fifth", (r) => true);
-            },
-          )));
 }
 
 Widget devTile(BuildContext context, int position) {

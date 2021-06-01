@@ -192,7 +192,9 @@ const List<String> gameImage = [
   'assets/snake.png',
   'assets/minesweeper.png',
   'assets/hangman.png',
-  'assets/mtFace.jpg'
+  'assets/mtFace.jpg',
+  'assets/leaderboard.png',
+  'assets/chat.png'
 ];
 const List<Icon> cardsList = [
   Icon(Icons.alarm),
@@ -203,15 +205,26 @@ const List<Color> appColors = [
   Colors.amber,
   Colors.green,
   Colors.red,
-  Colors.purple
+  Colors.purple,
+  Colors.blue,
+  Colors.teal
 ];
 const List<String> gameName = [
   "Snake",
   "Minesweeper",
   "Hangman",
-  "About the\ndev"
+  "About the\ndev",
+  "LeaderBoard",
+  "Chat Room"
 ];
-const List<String> route = ["/first", "/second", "/third", "/fourth", "/fifth"];
+const List<String> route = [
+  "/first",
+  "/second",
+  "/third",
+  "/fourth",
+  "/fifth",
+  "/sixth",
+];
 
 const List<String> socialHandles = [
   "https://www.facebook.com/aneeket.mangal/",
