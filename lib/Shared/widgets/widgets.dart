@@ -18,7 +18,8 @@ AppBar themeAppBar(BuildContext context, int index) {
           child: Container(
             height: 45,
             width: 40,
-            child: Image.asset(gameImage[index]),
+            child: Hero(
+                tag: gameImage[index], child: Image.asset(gameImage[index])),
           ),
         ),
         Expanded(

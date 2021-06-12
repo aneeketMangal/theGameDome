@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 import 'package:snake/Shared/preferences/preferences.dart';
 import 'package:snake/Shared/widgets/widgets.dart';
-import 'package:snake/pages/mainScreen.dart';
+import 'package:snake/pages/mainScreen/mainScreen.dart';
 import 'package:snake/register/avatar.dart';
 import 'package:snake/register/initialRegisterPage.dart';
 

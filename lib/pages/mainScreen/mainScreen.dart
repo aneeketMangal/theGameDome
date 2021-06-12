@@ -2,11 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:snake/Shared/ui_elements/colors.dart';
 import 'package:snake/Shared/widgets/widgets.dart';
-import 'package:snake/pages/chat.dart';
+import 'package:snake/pages/mainScreen/devTile.dart';
+import 'package:snake/pages/mainScreen/gameTile.dart';
 import 'package:snake/register/avatar.dart';
 import 'package:snake/register/initialRegisterPage.dart';
 
-import '../Shared/data/const.dart';
+import '../../Shared/data/const.dart';
 
 class ConsoleScreen extends StatefulWidget {
   final Avatar currAvatar;
@@ -36,7 +37,23 @@ class _ConsoleScreenState extends State<ConsoleScreen> {
       appBar: new AppBar(
         title: Row(
           children: [
-            Expanded(flex: 8, child: logoBanner(context)),
+            Expanded(
+              flex: 8,
+              child: TweenAnimationBuilder(
+                  duration: Duration(seconds: 2),
+                  tween: Tween<double>(begin: 0, end: 1),
+                  // padding: val;
+
+                  child: logoBanner(context),
+                  builder: (BuildContext context, double _val, Widget child) {
+                    return Opacity(
+                        opacity: _val,
+                        child: Padding(
+                          padding: EdgeInsets.all(_val * 20),
+                          child: child,
+                        ));
+                  }),
+            ),
             Expanded(
               flex: 3,
               child: GestureDetector(
@@ -117,98 +134,4 @@ class _ConsoleScreenState extends State<ConsoleScreen> {
       ),
     );
   }
-}
-
-Widget gameTile(BuildContext context, int position, String username) {
-  return GestureDetector(
-    onTap: () {
-      if (position != 5)
-        Navigator.pushNamedAndRemoveUntil(
-            context, route[position], (r) => true);
-      else
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (BuildContext context) {
-            return ChatRoom(username);
-          }),
-        );
-    },
-    child: Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Card(
-        elevation: 3.0,
-        color: appColors[position],
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Expanded(
-              flex: 2,
-              child: Container(
-                alignment: Alignment.topLeft,
-                padding: EdgeInsets.only(left: 15, right: 15, top: 10),
-                child: Text(
-                  gameName[position],
-                  style: TextStyle(fontSize: 23.0, color: Colors.white),
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 7,
-              child: Image.asset(
-                gameImage[position],
-                fit: BoxFit.cover,
-              ),
-            ),
-          ],
-        ),
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-      ),
-    ),
-  );
-}
-
-Widget devTile(BuildContext context, int position) {
-  return GestureDetector(
-    onTap: () {
-      Navigator.pushNamedAndRemoveUntil(context, route[position], (r) => true);
-    },
-    child: Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: Card(
-        elevation: 3.0,
-        color: appColors[position],
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            Expanded(
-              flex: 3,
-              child: Container(
-                alignment: Alignment.topLeft,
-                padding: EdgeInsets.only(left: 15, right: 15, top: 10),
-                child: Text(
-                  gameName[position],
-                  style: TextStyle(fontSize: 23.0, color: Colors.white),
-                ),
-              ),
-            ),
-            Expanded(
-              flex: 5,
-              child: Container(
-                padding: EdgeInsets.fromLTRB(0, 0, 20, 20),
-                alignment: Alignment.bottomRight,
-                child: CircleAvatar(
-                  backgroundImage: ExactAssetImage('assets/mtFace.jpg'),
-                  minRadius: 45,
-                  maxRadius: 45,
-                ),
-              ),
-            ),
-          ],
-        ),
-        shape:
-            RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.0)),
-      ),
-    ),
-  );
 }

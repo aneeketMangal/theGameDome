@@ -121,6 +121,7 @@ class _ChatRoomState extends State<ChatRoom> {
                       onPressed: () {
                         httpService.sendPosts(
                             widget.userName, titleController.text);
+                        titleController.clear();
                         if (mounted) setState(() {});
                       }),
                 )

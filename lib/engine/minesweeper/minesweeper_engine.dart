@@ -22,7 +22,8 @@ class Minesweeper extends StatefulWidget {
   }
 }
 
-class MinesweeperState extends State<Minesweeper> {
+class MinesweeperState extends State<Minesweeper>
+    with SingleTickerProviderStateMixin {
   DatabaseHelper databaseHelper = DatabaseHelper();
   DateTime initial;
   int rowLength;
@@ -42,6 +43,7 @@ class MinesweeperState extends State<Minesweeper> {
   List<int> list;
   int squaresLeft;
   int recent;
+  AnimationController _controller;
 
   @override
   void initState() {
@@ -64,16 +66,8 @@ class MinesweeperState extends State<Minesweeper> {
     game.username = currAvatarTemp.username;
     game.charPos = currAvatarTemp.avatarIndex;
     game.difficulty = recent % 3;
-    int result;
 
-    result = await databaseHelper.insertGame(game);
-
-    if (result != 0) {
-      print("ho gaya sbji");
-    } else {
-      // Failure
-      print("ae mereko to aisa dhak dhak ho rela h");
-    }
+    await databaseHelper.insertGame(game);
   }
 
   Widget toggleButton() {
@@ -172,6 +166,8 @@ class MinesweeperState extends State<Minesweeper> {
     gameOver = false;
     noOfMines = z;
     recent = 1;
+    _controller =
+        AnimationController(duration: Duration(milliseconds: 200), vsync: this);
 
     squaresLeft = rowLength * colLength;
     mainBoard = List.generate(rowLength, (i) {

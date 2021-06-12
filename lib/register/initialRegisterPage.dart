@@ -3,9 +3,7 @@ import 'package:snake/Shared/data/const.dart';
 import 'package:snake/Shared/preferences/preferences.dart';
 import 'package:snake/Shared/widgets/widgets.dart';
 import 'package:scroll_snap_list/scroll_snap_list.dart';
-// <div>Icons made by <a href="https://www.flaticon.com/authors/surang" title="surang">surang</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a></div>
-
-import 'package:snake/pages/mainScreen.dart';
+import 'package:snake/pages/mainScreen/mainScreen.dart';
 import 'package:snake/register/avatar.dart';
 
 class InitialRegister extends StatefulWidget {
