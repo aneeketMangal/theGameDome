@@ -40,17 +40,17 @@ class GameListState extends State<GameList> {
       //     // Expanded(flex: 2, child: recordTile(context, 3, gameList[3])),
       //   ],
       // ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      floatingActionButton: FloatingActionButton(
-        // isExtended: true,
-        child: Icon(Icons.sanitizer_rounded),
-        backgroundColor: Colors.green,
-        onPressed: () {
-          setState(() {
-            _save();
-          });
-        },
-      ),
+      // floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      // floatingActionButton: FloatingActionButton(
+      //   // isExtended: true,
+      //   child: Icon(Icons.sanitizer_rounded),
+      //   backgroundColor: Colors.green,
+      //   onPressed: () {
+      //     setState(() {
+      //       _save();
+      //     });
+      //   },
+      // ),
     );
   }
 
@@ -87,9 +87,9 @@ class GameListState extends State<GameList> {
 
   void updateListView() async {
     final Future<Database> dbFuture = databaseHelper.initializeDatabase();
-    print("itna hua");
+
     dbFuture.then((database) {
-      Future<List<Game>> gameListFuture = databaseHelper.getGameList();
+      Future<List<Game>> gameListFuture = databaseHelper.getSortedGameList();
 
       gameListFuture.then((gameList) {
         setState(() {

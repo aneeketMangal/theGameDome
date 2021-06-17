@@ -54,8 +54,9 @@ class DatabaseHelper {
   Future<List<Map<String, dynamic>>> getGameMapList() async {
     Database db = await this.database;
 
-//		var result = await db.rawQuery('SELECT * FROM $noteTable order by $colPriority ASC');
-    var result = await db.query(noteTable);
+    var result =
+        await db.rawQuery('SELECT * FROM $noteTable order by $colScore DESC');
+    // var result = await db.query(noteTable);
     return result;
   }
 
@@ -93,6 +94,20 @@ class DatabaseHelper {
 
   // Get the 'Map List' [ List<Map> ] and convert it to 'Game List' [ List<Game> ]
   Future<List<Game>> getGameList() async {
+    var noteMapList = await getGameMapList(); // Get 'Map List' from database
+    int count =
+        noteMapList.length; // Count the number of map entries in db table
+
+    List<Game> leaderBoard = List<Game>();
+    // For loop to create a 'Game List' from a 'Map List'
+    for (int i = 0; i < count; i++) {
+      leaderBoard.add(Game.fromMapObject(noteMapList[i]));
+    }
+
+    return leaderBoard;
+  }
+
+  Future<List<Game>> getSortedGameList() async {
     var noteMapList = await getGameMapList(); // Get 'Map List' from database
     int count =
         noteMapList.length; // Count the number of map entries in db table

@@ -22,8 +22,7 @@ class Minesweeper extends StatefulWidget {
   }
 }
 
-class MinesweeperState extends State<Minesweeper>
-    with SingleTickerProviderStateMixin {
+class MinesweeperState extends State<Minesweeper> {
   DatabaseHelper databaseHelper = DatabaseHelper();
   DateTime initial;
   int rowLength;
@@ -43,8 +42,8 @@ class MinesweeperState extends State<Minesweeper>
   List<int> list;
   int squaresLeft;
   int recent;
-  AnimationController _controller;
-  List<Animation> _colorAnimations;
+  // AnimationController _controller;
+  // List<Animation> _colorAnimations;
 
   @override
   void initState() {
@@ -53,15 +52,16 @@ class MinesweeperState extends State<Minesweeper>
   }
 
   void _startNewGame() {
-    Navigator.pushNamedAndRemoveUntil(context, "/second", (r) => false);
+    Navigator.popAndPushNamed(context, "/second");
   }
 
   void saveRecord() async {
     DateTime endtime = DateTime.now();
     Avatar currAvatarTemp = await readDataFromSharedPreferences();
     Game game = new Game.basic();
-    game.gameId = 0;
+    game.gameId = 1;
     game.score = (endtime.difference(initial).inMilliseconds);
+    game.score = game.score ~/ 10;
 
     ///to be handled further
     game.username = currAvatarTemp.username;
@@ -107,6 +107,7 @@ class MinesweeperState extends State<Minesweeper>
                   setState(() {
                     int tempTemp = (recent + 1) % 3;
                     int temp = size[tempTemp];
+                    // saveRecord();
                     print(temp);
                     _newGame(temp * 2, temp, bombPlacementAlgorithm(temp));
                     recent = tempTemp;
@@ -158,8 +159,8 @@ class MinesweeperState extends State<Minesweeper>
 
   void openTileHandler(int position) {
     openTiles[position] = true;
-    _controller.forward();
-    print(_controller.value);
+    // _controller.forward();
+    // print(_controller.value);
   }
 
   //this function is a initializer
@@ -173,14 +174,14 @@ class MinesweeperState extends State<Minesweeper>
     gameOver = false;
     noOfMines = z;
     recent = 1;
-    _controller =
-        AnimationController(duration: Duration(milliseconds: 200), vsync: this);
-    _colorAnimations = [
-      ColorTween(begin: Colors.blue[200], end: Colors.red).animate(_controller)
-    ];
-    _controller.addListener(() {
-      setState(() {});
-    });
+    // _controller =
+    //     AnimationController(duration: Duration(milliseconds: 200), vsync: this);
+    // _colorAnimations = [
+    //   ColorTween(begin: Colors.blue[200], end: Colors.red).animate(_controller)
+    // ];
+    // _controller.addListener(() {
+    //   setState(() {});
+    // });
     squaresLeft = rowLength * colLength;
     mainBoard = List.generate(rowLength, (i) {
       return List.generate(colLength, (j) {
@@ -393,131 +394,127 @@ class MinesweeperState extends State<Minesweeper>
             width: width,
             color: Colors.blue[100],
             child: GridView.builder(
-                shrinkWrap: true,
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: colLength,
-                ),
-                itemCount: rowLength * colLength,
-                itemBuilder: (context, position) {
-                  int row = (position / colLength).floor();
-                  int column = (position % colLength);
-                  String char = ' ';
-                  Color main = Colors.blue[200];
-                  Color accent = Colors.blue[300];
-                  if (openTiles[position]) {
-                    main = Colors.blueGrey[
-                        (mainBoard[row][column].aroundBomb + 1) * 100];
-                    accent = Colors.blueGrey[
-                        (mainBoard[row][column].aroundBomb + 1) * 100];
-                    //accent = Colors.orange[100];
+              shrinkWrap: true,
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: colLength,
+              ),
+              itemCount: rowLength * colLength,
+              itemBuilder: (context, position) {
+                int row = (position / colLength).floor();
+                int column = (position % colLength);
+                String char = ' ';
+                Color main = Colors.blue[200];
+                Color accent = Colors.blue[300];
+                if (openTiles[position]) {
+                  main = Colors
+                      .blueGrey[(mainBoard[row][column].aroundBomb + 1) * 100];
+                  accent = Colors
+                      .blueGrey[(mainBoard[row][column].aroundBomb + 1) * 100];
+                  //accent = Colors.orange[100];
 
-                    if (mainBoard[row][column].isBomb) {
-                      char = "💣";
-                      main = Colors.red[400];
-                      accent = Colors.red[400];
-                    } else {
-                      if (mainBoard[row][column].aroundBomb != 0) {
-                        char = mainBoard[row][column].aroundBomb.toString();
-                      } else {
-                        char = " ";
-                      }
-                    }
+                  if (mainBoard[row][column].isBomb) {
+                    char = "💣";
+                    main = Colors.red[400];
+                    accent = Colors.red[400];
                   } else {
-                    if (flagTiles[position]) {
-                      char = "🚩";
-                      main = Colors.green[300];
-                      accent = Colors.green[300];
+                    if (mainBoard[row][column].aroundBomb != 0) {
+                      char = mainBoard[row][column].aroundBomb.toString();
                     } else {
                       char = " ";
                     }
                   }
+                } else {
+                  if (flagTiles[position]) {
+                    char = "🚩";
+                    main = Colors.green[300];
+                    accent = Colors.green[300];
+                  } else {
+                    char = " ";
+                  }
+                }
 
-                  return AnimatedBuilder(
-                    animation: _controller,
-                    builder: (BuildContext context, _) {
-                      return InkWell(
-                        onLongPress: () {
-                          if (openTiles[position] == false) {
-                            setState(() {
-                              noOfFlags +=
-                                  ((flagTiles[position] == false) ? 1 : (-1));
-                              flagTiles[position] = !flagTiles[position];
+                return InkWell(
+                  onLongPress: () {
+                    if (openTiles[position] == false) {
+                      setState(() {
+                        noOfFlags +=
+                            ((flagTiles[position] == false) ? 1 : (-1));
+                        flagTiles[position] = !flagTiles[position];
+                      });
+                    }
+                  },
+                  onTap: () async {
+                    if (flagTiles[position]) {
+                    } else {
+                      if (mainBoard[row][column].isBomb) {
+                        await Future.delayed(const Duration(milliseconds: 100),
+                            () {
+                          setState(() {
+                            gameOver = true;
+                          });
+                        });
+                        await Future.delayed(const Duration(milliseconds: 10),
+                            () {
+                          setState(() {
+                            openTiles[position] = true;
+                          });
+                        });
+                        for (int i = 0; i < noOfMines; i++) {
+                          if (list[i] != position) {
+                            await Future.delayed(
+                                const Duration(milliseconds: 10), () {
+                              setState(() {
+                                openTiles[list[i]] = true;
+                              });
                             });
                           }
-                        },
-                        onTap: () async {
-                          if (flagTiles[position]) {
-                          } else {
-                            if (mainBoard[row][column].isBomb) {
-                              await Future.delayed(
-                                  const Duration(milliseconds: 100), () {
-                                setState(() {
-                                  gameOver = true;
-                                });
-                              });
-                              await Future.delayed(
-                                  const Duration(milliseconds: 10), () {
-                                setState(() {
-                                  openTiles[position] = true;
-                                });
-                              });
-                              for (int i = 0; i < noOfMines; i++) {
-                                if (list[i] != position) {
-                                  await Future.delayed(
-                                      const Duration(milliseconds: 10), () {
-                                    setState(() {
-                                      openTiles[list[i]] = true;
-                                    });
-                                  });
-                                }
-                              }
+                        }
 
-                              await Future.delayed(
-                                  const Duration(milliseconds: 100), () {
-                                setState(() {
-                                  losewin = 1;
-                                });
-                              });
-                            } else if (mainBoard[row][column].aroundBomb == 0) {
-                              _onClick(row, column);
-                            } else {
-                              setState(() {
-                                if (openTiles[position] == false) {
-                                  squaresLeft = squaresLeft - 1;
-                                }
-                                openTiles[position] = true;
-                              });
-                              if (squaresLeft <= noOfMines) {
-                                await Future.delayed(
-                                    const Duration(milliseconds: 100), () {
-                                  setState(() {
-                                    gameOver = true;
-                                  });
-                                });
-
-                                setState(() {
-                                  losewin = 2;
-                                });
-                              }
-                            }
+                        await Future.delayed(const Duration(milliseconds: 100),
+                            () {
+                          setState(() {
+                            losewin = 1;
+                          });
+                        });
+                      } else if (mainBoard[row][column].aroundBomb == 0) {
+                        _onClick(row, column);
+                      } else {
+                        setState(() {
+                          if (openTiles[position] == false) {
+                            squaresLeft = squaresLeft - 1;
                           }
-                        },
-                        child: Container(
-                          width: width / colLength,
-                          height: (width + (width / 3)) / rowLength,
-                          decoration: BoxDecoration(
-                            // color: _colorAnimations[0].value,
-                            color: ((row + column) % 2 == 0) ? main : accent,
-                          ),
-                          child: Center(
-                              child: Text(char,
-                                  style: TextStyle(
-                                      fontSize: (30 / colLength) * 8))),
-                        ),
-                      );
-                    },
-                  );
-                }));
+                          openTiles[position] = true;
+                        });
+                        if (squaresLeft <= noOfMines) {
+                          await Future.delayed(
+                              const Duration(milliseconds: 100), () {
+                            setState(() {
+                              saveRecord();
+                              gameOver = true;
+                            });
+                          });
+
+                          setState(() {
+                            losewin = 2;
+                          });
+                        }
+                      }
+                    }
+                  },
+                  child: Container(
+                    width: width / colLength,
+                    height: (width + (width / 3)) / rowLength,
+                    decoration: BoxDecoration(
+                      // color: _colorAnimations[0].value,
+                      color: ((row + column) % 2 == 0) ? main : accent,
+                    ),
+                    child: Center(
+                        child: Text(char,
+                            style: TextStyle(fontSize: (30 / colLength) * 8))),
+                  ),
+                );
+              },
+            ));
       }
     } else {
       return Container(
@@ -546,7 +543,6 @@ class MinesweeperState extends State<Minesweeper>
                 onPressed: () {
                   setState(() {
                     if (losewin == 0) {
-                      saveRecord();
                       print("yipee");
                     } else {
                       print("you lost");

@@ -300,7 +300,7 @@ class _SnakeGameState extends State<SnakeGame> {
     game.score = score;
     game.username = currAvatarTemp.username;
     game.charPos = currAvatarTemp.avatarIndex;
-    game.difficulty = recent % 3;
+    game.difficulty = recent;
     int result;
 
     result = await databaseHelper.insertGame(game);

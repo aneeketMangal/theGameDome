@@ -79,11 +79,12 @@ class GameState extends State<Hangman> {
     DateTime endtime = DateTime.now();
     Avatar currAvatarTemp = await readDataFromSharedPreferences();
     Game game = new Game.basic();
-    game.gameId = 0;
+    game.gameId = 2;
     game.score = (endtime.difference(initial).inMilliseconds);
+    game.score = game.score ~/ 90;
     game.username = currAvatarTemp.username;
     game.charPos = currAvatarTemp.avatarIndex;
-    game.difficulty = 2;
+    game.difficulty = 1;
     int result;
 
     result = await databaseHelper.insertGame(game);
@@ -196,6 +197,9 @@ class GameState extends State<Hangman> {
   }
 
   Widget _wonGame() {
+    setState(() {
+      saveRecord();
+    });
     return Container(
       alignment: Alignment.center,
       padding: EdgeInsets.only(top: 10),
